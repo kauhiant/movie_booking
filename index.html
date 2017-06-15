@@ -1,0 +1,127 @@
+<html>
+<head>
+	<title>電影定位</title>
+	<meta charset="UTF-8">
+	<style>
+		.img{
+			width:250px;
+			margin:10px;
+		}
+		.movie{
+			width:250px;
+			height:250px;
+			display:table;
+			float: left; 
+		}
+	</style>
+	<script src='./movieInfo.js'>//import Info</script>
+	<script>
+		var isMovieList = false;
+		var movieListBlock = document.getElementById('movielist');
+		var movieInfoBlock = document.getElementById('movieinfo');
+		function showInfo(i){
+			InfoList[i].innerHTML = Info[i].name;
+			
+		}
+		function hideInfo(i){
+			InfoList[i].innerHTML = "";
+		}
+		function hideBlock(){
+			if(isMovieList){
+				movielist.style.display='none';
+				movieinfo.style.display='table';
+			}
+			else{
+				movielist.style.display='table';
+				movieinfo.style.display='none';
+			}
+				
+			isMovieList = !isMovieList;
+		}
+		function movieInformation(i){
+			var infos = document.getElementById('infos');
+			var introd = document.getElementById('introd');
+			document.getElementById('img').src=Info[i].imgsrc;
+			document.getElementById('name').innerHTML=Info[i].name;
+			infos.innerHTML="";
+			infos.innerHTML+='上映日期 : '+Info[i].data+'<br>';
+			infos.innerHTML+='發行商 : '+Info[i].publisher+'<br>';
+			infos.innerHTML+='語言 : '+Info[i].lang+'<br>';
+			infos.innerHTML+='片長 : '+Info[i].length+'<br>';
+			infos.innerHTML+='級別 : '+Info[i].clas+'<br>';
+			infos.innerHTML+='導演 : '+Info[i].director+'<br>';
+			infos.innerHTML+='演員 : '+Info[i].actor+'<br>';
+			
+			introd.innerHTML='<h2>電影介紹</h2>'+Info[i].intro;
+	//介紹
+		}
+	</script>
+</head>
+<body onclick='hideBlock()' onload='hideBlock()'>
+
+  <div id='movielist' >
+	<div id='movie0' class='movie'>
+		<img id = 'img0' class='img' src = './movie1.jpg' onmouseover='showInfo(0)' onmouseout='hideInfo(0)' onclick='movieInformation(0)'>
+		<p id='m0'></p>
+	</div>
+	<div id='movie1' class='movie'>
+		<img id = 'img1' class='img' src = './movie2.jpg' onmouseover='showInfo(1)' onmouseout='hideInfo(1)' onclick='movieInformation(1)'>
+		<p id='m1'></p>
+	</div>
+	<div id='movie2' class='movie'>
+		<img id = 'img2' class='img' src = './movie3.jpg' onmouseover='showInfo(2)' onmouseout='hideInfo(2)' onclick='movieInformation(2)'>
+		<p id='m2'></p>
+	</div>
+	<div id='movie3' class='movie'>
+		<img id = 'img3' class='img' src = './movie4.jpg' onmouseover='showInfo(3)' onmouseout='hideInfo(3)' onclick='movieInformation(3)'>
+		<p id='m3'></p>
+	</div>
+	<div id='movie4' class='movie'>
+		<img id = 'img4' class='img' src = './movie5.jpg' onmouseover='showInfo(4)' onmouseout='hideInfo(4)' onclick='movieInformation(4)'>
+		<p id='m4'></p>
+	</div>
+  </div>
+  
+  <div id='movieinfo'>
+	<img id='img' src='' style='width:100vw'>
+	<h3 id='name'></h3>
+	<div id='infos'></div>
+	
+	<div id='introd'></div>
+  </div>
+	
+	<script>
+		var movieList = [
+			document.getElementById('movie0'),
+			document.getElementById('movie1'),
+			document.getElementById('movie2'),
+			document.getElementById('movie3'),
+			document.getElementById('movie4')
+		];
+		var InfoList = [
+			document.getElementById('m0'),
+			document.getElementById('m1'),
+			document.getElementById('m2'),
+			document.getElementById('m3'),
+			document.getElementById('m4')
+		];
+	</script>
+</body>
+</html>
+
+<script>
+	
+	/*for (var i in Info){
+		for(let x in Info[i]){
+			document.getElementById('movie1').innerHTML+=Info[i][x];
+		}
+	}*/
+	/*var moveList = document.getElementById('movieList');
+	for(var i in Info){
+		moveList.innerHTML += '<div id = "movie'+i+'">';
+		var movieIndex = 'movie'+i;
+		var tmp = document.getElementById(movieIndex);
+		moveList.innerHTML += '</div>';
+	}*/
+	
+</script>
