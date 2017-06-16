@@ -1,6 +1,6 @@
 # movie_booking
 members:
-陳俊霖
+陳俊霖\n
 黃靖硯
 趙威筑
 王咸竣
