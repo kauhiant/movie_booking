@@ -13,12 +13,20 @@
 			display:table;
 			float: left; 
 		}
+		.film-pic{
+			width:250px;
+			margin:10px;
+		}
 	</style>
+	<link rel=stylesheet type="text/css" href="booking.css">
 	<script src='./movieInfo.js'>//import Info</script>
 	<script>
 		var isMovieList = false;
+		var isMovieSelection = false;
+		var isMovieBook = false;
 		var movieListBlock = document.getElementById('movielist');
 		var movieInfoBlock = document.getElementById('movieinfo');
+		var seatNum = 0;
 		function showInfo(i){
 			InfoList[i].innerHTML = Info[i].name;
 			
@@ -27,9 +35,12 @@
 			InfoList[i].innerHTML = "";
 		}
 		function hideBlock(){
+			selection.style.display = 'none';
+			movieBooking.style.display = 'none';
 			if(isMovieList){
 				movielist.style.display='none';
 				movieinfo.style.display='table';
+				
 			}
 			else{
 				movielist.style.display='table';
@@ -38,6 +49,47 @@
 				
 			isMovieList = !isMovieList;
 		}
+		
+		function selectionPage(){
+			selection.style.display = 'none';
+			movieBooking.style.display = 'none';
+			if(isMovieSelection)
+			{
+				movielist.style.display='none';
+				movieinfo.style.display='none';
+				selection.style.display = 'table';
+			}
+			else{
+				movielist.style.display='table';
+				movieinfo.style.display='none';
+				selection.style.display = 'none';
+			}
+			isMovieSelection = !isMovieSelection;
+		}
+		
+		function bookingPage(){
+			selection.style.display = 'none';
+			movieBooking.style.display = 'none';
+			if(isMovieBook)
+			{
+				movielist.style.display='none';
+				movieinfo.style.display='none';
+				selection.style.display = 'none';
+				movieBooking.style.display = 'table';
+			}
+			else{
+				movielist.style.display='none';
+				movieinfo.style.display='none';
+				selection.style.display = 'table';
+				movieBooking.style.display = 'none';
+			}
+			isMovieBook = !isMovieBook;
+		}
+		
+		function seatCount(){
+			
+		}
+		
 		function movieInformation(i){
 			var infos = document.getElementById('infos');
 			var introd = document.getElementById('introd');
@@ -57,9 +109,9 @@
 		}
 	</script>
 </head>
-<body onclick='hideBlock()' onload='hideBlock()'>
+<body onload='hideBlock()'>
 
-  <div id='movielist' >
+  <div id='movielist' onclick='hideBlock()'>
 	<div id='movie0' class='movie'>
 		<img id = 'img0' class='img' src = './movie1.jpg' onmouseover='showInfo(0)' onmouseout='hideInfo(0)' onclick='movieInformation(0)'>
 		<p id='m0'></p>
@@ -82,14 +134,177 @@
 	</div>
   </div>
   
-  <div id='movieinfo'>
+  <div id='movieinfo' onclick='hideBlock()'>
 	<img id='img' src='' style='width:100vw'>
 	<h3 id='name'></h3>
 	<div id='infos'></div>
 	
 	<div id='introd'></div>
   </div>
-	
+<button id="select" onclick="selectionPage()">Movie selection</button>
+
+<div id="selection">
+	<table class="book-table">
+        <tbody>
+          <tr>
+            <td rowspan="3" class="film-pic"><img id="photo_img" src="373.jpg" alt="電影劇照"></td>
+            <td>
+              <div class="select-style">
+                <select name="movie_id" id="select_movie" required="required">
+                  <option value="">選擇電影</option>
+                <option value="411">謝謝你，在世界的角落找到我</option><option value="407">戀妻家宮本</option><option value="373">貓咪收集之家</option><option value="404">光</option><option value="405">接線員</option></select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="select-style">
+                <select name="date" id="select_date" required="required">
+                  <option value="">選擇時間</option>
+                <option value="2017-06-16">2017/06/16</option><option value="2017-06-17">2017/06/17</option><option value="2017-06-18">2017/06/18</option><option value="2017-06-19">2017/06/19</option><option value="2017-06-20">2017/06/20</option></select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="select-style">
+                <select name="stage_id" id="select_stage" required="required">
+                  <option value="">選擇場次</option>
+                <option value="24313">14:50</option><option value="24314">17:00</option><option value="24315">19:10</option><option value="24316">21:20</option><option value="24330">23:10</option></select>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+	  <button id="next" onclick="bookingPage()">Next</button>
+</div>
+
+<div id='movieBooking'>
+  <div class="cockpit">
+    <h1>Please select a seat</h1>
+  </div>
+  <ol class="cabin fuselage">
+    <li class="row row--1">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id="1A" />
+          <label for="1A">1A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="1B" />
+          <label for="1B">1B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="1C" />
+          <label for="1C">1C</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="1D" />
+          <label for="1D">1D</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="1E" />
+          <label for="1E">1E</label>
+        </li>
+      </ol>
+    </li>
+    <li class="row row--2">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id="2A" />
+          <label for="2A">2A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="2B" />
+          <label for="2B">2B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="2C" />
+          <label for="2C">2C</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="2D" />
+          <label for="2D">2D</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="2E" />
+          <label for="2E">2E</label>
+        </li>
+      </ol>
+    </li>
+    <li class="row row--3">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id="3A" />
+          <label for="3A">3A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="3B" />
+          <label for="3B">3B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="3C" />
+          <label for="3C">3C</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="3D" />
+          <label for="3D">3D</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="3E" />
+          <label for="3E">3E</label>
+        </li>
+      </ol>
+    </li>
+    <li class="row row--4">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id="4A" />
+          <label for="4A">4A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="4B" />
+          <label for="4B">4B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="4C" />
+          <label for="4C">4C</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="4D" />
+          <label for="4D">4D</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="4E" />
+          <label for="4E">4E</label>
+        </li>
+      </ol>
+    </li>
+    <li class="row row--5">
+      <ol class="seats" type="A">
+        <li class="seat">
+          <input type="checkbox" id="5A" />
+          <label for="5A">5A</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="5B" />
+          <label for="5B">5B</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="5C" />
+          <label for="5C">5C</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="5D" />
+          <label for="5D">5D</label>
+        </li>
+        <li class="seat">
+          <input type="checkbox" id="5E" />
+          <label for="5E">5E</label>
+        </li>
+      </ol>
+    </li>
+</div>
 	<script>
 		var movieList = [
 			document.getElementById('movie0'),
