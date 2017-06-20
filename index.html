@@ -3,6 +3,7 @@
 	<title>電影定位</title>
 	<meta charset="UTF-8">
 	<style>
+	/*顯示在初始頁面的圖片大小*/
 		.img{
 			width:250px;
 			margin:10px;
@@ -18,38 +19,68 @@
 			margin:10px;
 		}
 	</style>
+	<!--卡爾寫的 等他解釋
 	<link rel=stylesheet type="text/css" href="booking.css">
-	<script src='./movieInfo.js'>//import Info</script>
+	-->
+	<!--類JSON檔引入 裡面是電影資訊 json檔 叫 Info-->
+	<script src='./movieInfo.js'></script>
+	
 	<script>
-		var isMovieList = false;
-		var isMovieSelection = false;
-		var isMovieBook = false;
-		var movieListBlock = document.getElementById('movielist');
-		var movieInfoBlock = document.getElementById('movieinfo');
-		var seatNum = 0;
+	//movieList 初始畫面
+	//movieInfo 點預覽圖進去的畫面 有大圖+完整資訊的
+	//movieBook 訂位畫面
+		var DivStatus;
+		var movieListBlock;
+		var movieInfoBlock;
+		var movieBookBlock;
+		
+		function init(){
+			movieListBlock = document.getElementById('movielist');
+			movieInfoBlock = document.getElementById('movieinfo');
+			movieBookBlock = document.getElementById('moviebook');
+			DivStatus = 'movieList';
+			console.log('init');
+		}
+		//var seatNum = 0;卡爾寫的
+		
+		//在初始畫面中 滑鼠移到預覽圖上就顯示電影名稱
 		function showInfo(i){
 			InfoList[i].innerHTML = Info[i].name;
-			
 		}
+		//在初始畫面上 滑鼠離開預覽圖就隱藏電影名稱
 		function hideInfo(i){
 			InfoList[i].innerHTML = "";
 		}
-		function hideBlock(){
-			selection.style.display = 'none';
-			movieBooking.style.display = 'none';
-			if(isMovieList){
-				movielist.style.display='none';
-				movieinfo.style.display='table';
-				
+		//轉換區塊 list->info->book->list
+		function nextBlock(){
+			console.log(DivStatus);
+			switch(DivStatus){
+				case 'movieList':
+					movieListBlock.style.display = 'none';
+					movieInfoBlock.style.display = 'table';
+					DivStatus = 'movieInfo';
+				break;
+				case 'movieInfo':
+					movieInfoBlock.style.display = 'none';
+					movieBookBlock.style.display = 'table';
+					DivStatus = 'movieBook';
+				break;
+				case 'movieBook':
+					movieBookBlock.style.display = 'none';
+					movieListBlock.style.display = 'table';
+					DivStatus = 'movieList';
+				break;
 			}
-			else{
-				movielist.style.display='table';
-				movieinfo.style.display='none';
-			}
-				
-			isMovieList = !isMovieList;
+			console.log(DivStatus);
 		}
-		
+		//返回列表
+		function listBlock(){
+			movieInfoBlock.style.display = 'none';
+			movieBookBlock.style.display = 'none';
+			movieListBlock.style.display = 'table';
+			DivStatus = 'movieList';
+			console.log('back list');
+		}
 		function selectionPage(){
 			selection.style.display = 'none';
 			movieBooking.style.display = 'none';
@@ -103,15 +134,18 @@
 			infos.innerHTML+='級別 : '+Info[i].clas+'<br>';
 			infos.innerHTML+='導演 : '+Info[i].director+'<br>';
 			infos.innerHTML+='演員 : '+Info[i].actor+'<br>';
-			
+		//介紹	
 			introd.innerHTML='<h2>電影介紹</h2>'+Info[i].intro;
-	//介紹
+	
 		}
 	</script>
 </head>
-<body onload='hideBlock()'>
-
-  <div id='movielist' onclick='hideBlock()'>
+<body onload='init()'>
+  <div id='menu'>
+    <button onclick='listBlock()'>返回列表</button>
+  </div>
+  
+  <div id='movielist' onclick='nextBlock()' >
 	<div id='movie0' class='movie'>
 		<img id = 'img0' class='img' src = './movie1.jpg' onmouseover='showInfo(0)' onmouseout='hideInfo(0)' onclick='movieInformation(0)'>
 		<p id='m0'></p>
@@ -134,15 +168,20 @@
 	</div>
   </div>
   
-  <div id='movieinfo' onclick='hideBlock()'>
+  <div id='movieinfo'>
 	<img id='img' src='' style='width:100vw'>
 	<h3 id='name'></h3>
 	<div id='infos'></div>
 	
 	<div id='introd'></div>
+	<button onclick='nextBlock()'>訂票</button>
   </div>
-<button id="select" onclick="selectionPage()">Movie selection</button>
 
+  <div id='moviebook' onclick='nextBlock()'>
+  booking
+  </div>
+  <button id="select" onclick="selectionPage()">Movie selection</button>
+<!--
 <div id="selection">
 	<table class="book-table">
         <tbody>
@@ -178,7 +217,8 @@
       </table>
 	  <button id="next" onclick="bookingPage()">Next</button>
 </div>
-
+-->
+<!--
 <div id='movieBooking'>
   <div class="cockpit">
     <h1>Please select a seat</h1>
@@ -305,6 +345,7 @@
       </ol>
     </li>
 </div>
+-->
 	<script>
 		var movieList = [
 			document.getElementById('movie0'),
