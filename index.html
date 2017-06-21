@@ -29,13 +29,15 @@
 	<script>
 	//movieListBlock 初始畫面
 	//movieInfoBlock 點預覽圖進去的畫面 有大圖+完整資訊的
-	//movieBookBlock 訂位畫面
+	//movieBookBlock 訂位畫面 選電影日期場次
+	//movieSeatBlock 劃位畫面 選座位
 	//movieList movieListBlock裡的每個電影
 	//movieInfo movieListBlock裡每個電影的資訊(電影名稱)
 		var DivStatus;
 		var movieListBlock;
 		var movieInfoBlock;
 		var movieBookBlock;
+		var movieSeatBlock;
 		var movieList;
 		var InfoList;
 		//初始化
@@ -43,6 +45,7 @@
 			movieListBlock = document.getElementById('movielist');
 			movieInfoBlock = document.getElementById('movieinfo');
 			movieBookBlock = document.getElementById('moviebook');
+			movieSeatBlock = document.getElementById('movieseat');
 			movieList = [
 				document.getElementById('movie0'),
 				document.getElementById('movie1'),
@@ -71,7 +74,7 @@
 		function hideInfo(i){
 			InfoList[i].innerHTML = "";
 		}
-		//轉換區塊 list->info->book1->book2->list
+		//轉換區塊 list->info->book->seat->list
 		function nextBlock(){
 			//console.log(DivStatus);
 			switch(DivStatus){
@@ -87,12 +90,12 @@
 				break;
 				case 'movieBook':
 					movieBookBlock.style.display = 'none';
-					movieListBlock.style.display = 'table';
+					movieSeatBlock.style.display = 'table';
 					DivStatus = 'movieList';
 				break;
-				case 'movieBookCheck':
-					movieBookBlock.style.display = 'none';
-					movieListBlock.style.display = 'table';
+				case 'movieSeat':
+					movieSeatBlock.style.display = 'none';
+					movieSeatBlock.style.display = 'table';
 					DivStatus = 'movieList';
 				break;
 			}
@@ -102,11 +105,12 @@
 		function listBlock(){
 			movieInfoBlock.style.display = 'none';
 			movieBookBlock.style.display = 'none';
+			movieSeatBlock.style.display = 'none';
 			movieListBlock.style.display = 'table';
 			DivStatus = 'movieList';
 			//console.log('back list');
 		}
-		function selectionPage(){
+		/*function selectionPage(){
 			selection.style.display = 'none';
 			movieBooking.style.display = 'none';
 			if(isMovieSelection)
@@ -121,12 +125,18 @@
 				selection.style.display = 'none';
 			}
 			isMovieSelection = !isMovieSelection;
+		}*/
+		
+		//進入到選位子的畫面
+		function checkInfo(){
+			var n = document.getElementById('select_movie').options.selectedIndex;
+			var d = document.getElementById('select_date').options.selectedIndex;
+			var t = document.getElementById('select_stage').options.selectedIndex;
+			//選的電影 的日期場次
+			document.getElementById('checkInfo').innerHTML =
+				Info[n].name+"<br>日期:"+Info[n].data[d]+"<br>場次:"+Info[n].time[t];
 		}
 		
-		
-		function seatCount(){
-			
-		}
 		//變更info頁面的資料
 		function movieInformation(i){
 			var infos = document.getElementById('infos');
@@ -141,13 +151,12 @@
 			infos.innerHTML+='級別 : '+Info[i].clas+'<br>';
 			infos.innerHTML+='導演 : '+Info[i].director+'<br>';
 			infos.innerHTML+='演員 : '+Info[i].actor+'<br>';
-		//介紹	
 			introd.innerHTML='<h2>電影介紹</h2>'+Info[i].intro;
-			//show this
+			//顯示infoBlock
 			nextBlock();
 			//選擇電影
 			document.getElementById('select_movie').options.selectedIndex=i;
-			//document.getElementById('photo_img').src=Info[i].simgsrc;
+			//把下一個畫面(bookBlock)的資料先讀好
 			selectMovie();
 		}
 		//選擇電影
@@ -156,7 +165,7 @@
 			var movieIndex = document.getElementById('select_movie').options.selectedIndex;
 			//console.log(movieIndex);
 			document.getElementById('photo_img').src=Info[movieIndex].simgsrc;
-			//日期
+			//日期 下拉式選單
 			for(var i=0;i<3;i++){
 				var sd = document.getElementById('select_date').childNodes[2*i+1];
 				var opt = document.createElement('OPTION');
@@ -166,7 +175,7 @@
 				sd.replaceChild(tmp, sd.childNodes[0]);
 				//console.log(sd.childNodes[0]);
 			}
-			//場次
+			//場次 下拉式選單
 			for(var i=0;i<4;i++){
 				var sd = document.getElementById('select_stage').childNodes[2*i+1];
 				var opt = document.createElement('OPTION');
@@ -224,7 +233,7 @@
           <tr>
             <td rowspan="3" class="film-pic"><img id="photo_img" src="" alt="電影劇照" style="width:250px;height:180"></td>
             <td>
-              <div class="select-style" >
+              <div class="select-style" ><!--電影選單-->
                 <select id="select_movie" required="required" onclick='selectMovie()'>
                   <option value="411">謝謝你，在世界的角落找到我</option>
 				  <option value="407">戀妻家宮本</option>
@@ -237,7 +246,7 @@
           </tr>
           <tr>
             <td>
-              <div class="select-style">
+              <div class="select-style"><!--日期選單-->
                 <select name="date" id="select_date" required="required">
                   <option >2017/06/16</option>
 				  <option >2017/06/17</option>
@@ -248,7 +257,7 @@
           </tr>
           <tr>
             <td>
-              <div class="select-style">
+              <div class="select-style"><!--場次選單-->
                 <select name="stage_id" id="select_stage" required="required">
                 <option >14:50</option>
 				<option >17:00</option>
@@ -260,18 +269,14 @@
           </tr>
         </tbody>
       </table>
-	  <button id="next" onclick="bookingPage()">Next</button>
+	  <!--確認 到下一個畫面-->
+	  <button id="next" onclick="nextBlock();checkInfo()">確認</button>
   </div>
-  <div id='seat'>seat</div>
   </div>
-  <!--button id="select" onclick="selectionPage()">Movie selection</button-->
-<!--
 
--->
-
-<div id='movieBooking'>
-  <div class="cockpit">
-    <h1>Please select a seat</h1>
+<!--選擇座位 不完整:最多四個位置(沒做),要可以查詢(沒做)-->
+<div id='movieseat'>
+  <div id="checkInfo">
   </div>
   <ol class="cabin fuselage">
     <li class="row row--1">
@@ -394,25 +399,11 @@
         </li>
       </ol>
     </li>
+	
+	<!--未完成-->
+	<button id='sure' onclick=''>確認</button>
 </div>
 
 	
 </body>
 </html>
-
-<script>
-	
-	/*for (var i in Info){
-		for(let x in Info[i]){
-			document.getElementById('movie1').innerHTML+=Info[i][x];
-		}
-	}*/
-	/*var moveList = document.getElementById('movieList');
-	for(var i in Info){
-		moveList.innerHTML += '<div id = "movie'+i+'">';
-		var movieIndex = 'movie'+i;
-		var tmp = document.getElementById(movieIndex);
-		moveList.innerHTML += '</div>';
-	}*/
-	
-</script>
