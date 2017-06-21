@@ -6,39 +6,59 @@
 	/*顯示在初始頁面的圖片大小*/
 		.img{
 			width:250px;
-			margin:10px;
+			height:180px;
 		}
 		.movie{
 			width:250px;
 			height:250px;
 			display:table;
 			float: left; 
+			margin:1px;
 		}
 		.film-pic{
 			width:250px;
 			margin:10px;
 		}
 	</style>
-	<!--卡爾寫的 等他解釋
+	<!--卡爾寫的 等他解釋-->
 	<link rel=stylesheet type="text/css" href="booking.css">
-	-->
+	
 	<!--類JSON檔引入 裡面是電影資訊 json檔 叫 Info-->
 	<script src='./movieInfo.js'></script>
 	
 	<script>
-	//movieList 初始畫面
-	//movieInfo 點預覽圖進去的畫面 有大圖+完整資訊的
-	//movieBook 訂位畫面
+	//movieListBlock 初始畫面
+	//movieInfoBlock 點預覽圖進去的畫面 有大圖+完整資訊的
+	//movieBookBlock 訂位畫面
+	//movieList movieListBlock裡的每個電影
+	//movieInfo movieListBlock裡每個電影的資訊(電影名稱)
 		var DivStatus;
 		var movieListBlock;
 		var movieInfoBlock;
 		var movieBookBlock;
-		
+		var movieList;
+		var InfoList;
+		//初始化
 		function init(){
 			movieListBlock = document.getElementById('movielist');
 			movieInfoBlock = document.getElementById('movieinfo');
 			movieBookBlock = document.getElementById('moviebook');
+			movieList = [
+				document.getElementById('movie0'),
+				document.getElementById('movie1'),
+				document.getElementById('movie2'),
+				document.getElementById('movie3'),
+				document.getElementById('movie4')
+			];
+			InfoList = [
+				document.getElementById('m0'),
+				document.getElementById('m1'),
+				document.getElementById('m2'),
+				document.getElementById('m3'),
+				document.getElementById('m4')
+			];
 			DivStatus = 'movieList';
+			listBlock();
 			console.log('init');
 		}
 		//var seatNum = 0;卡爾寫的
@@ -51,7 +71,7 @@
 		function hideInfo(i){
 			InfoList[i].innerHTML = "";
 		}
-		//轉換區塊 list->info->book->list
+		//轉換區塊 list->info->book1->book2->list
 		function nextBlock(){
 			console.log(DivStatus);
 			switch(DivStatus){
@@ -66,6 +86,11 @@
 					DivStatus = 'movieBook';
 				break;
 				case 'movieBook':
+					movieBookBlock.style.display = 'none';
+					movieListBlock.style.display = 'table';
+					DivStatus = 'movieList';
+				break;
+				case 'movieBookCheck':
 					movieBookBlock.style.display = 'none';
 					movieListBlock.style.display = 'table';
 					DivStatus = 'movieList';
@@ -98,29 +123,11 @@
 			isMovieSelection = !isMovieSelection;
 		}
 		
-		function bookingPage(){
-			selection.style.display = 'none';
-			movieBooking.style.display = 'none';
-			if(isMovieBook)
-			{
-				movielist.style.display='none';
-				movieinfo.style.display='none';
-				selection.style.display = 'none';
-				movieBooking.style.display = 'table';
-			}
-			else{
-				movielist.style.display='none';
-				movieinfo.style.display='none';
-				selection.style.display = 'table';
-				movieBooking.style.display = 'none';
-			}
-			isMovieBook = !isMovieBook;
-		}
 		
 		function seatCount(){
 			
 		}
-		
+		//變更info頁面的資料
 		function movieInformation(i){
 			var infos = document.getElementById('infos');
 			var introd = document.getElementById('introd');
@@ -136,62 +143,72 @@
 			infos.innerHTML+='演員 : '+Info[i].actor+'<br>';
 		//介紹	
 			introd.innerHTML='<h2>電影介紹</h2>'+Info[i].intro;
-	
+			//show this
+			nextBlock();
+			//選擇電影
+			document.getElementById('select_movie').options.selectedIndex=i;
+			document.getElementById('photo_img').src=Info[i].simgsrc;
+		}
+		//選擇電影
+		function selectMovie(){
+			var movieIndex = document.getElementById('select_movie').options.selectedIndex;
+			console.log(movieIndex);
+			document.getElementById('photo_img').src=Info[movieIndex].simgsrc;
 		}
 	</script>
 </head>
 <body onload='init()'>
-  <div id='menu'>
+  <div id='menu' style="background-color:gray">
     <button onclick='listBlock()'>返回列表</button>
   </div>
-  
-  <div id='movielist' onclick='nextBlock()' >
+  <!--電影列表-->
+  <div id='movielist' >
 	<div id='movie0' class='movie'>
-		<img id = 'img0' class='img' src = './movie1.jpg' onmouseover='showInfo(0)' onmouseout='hideInfo(0)' onclick='movieInformation(0)'>
+		<img id = 'img0' class='img' src = './movie1s.jpg' onmouseover='showInfo(0)' onmouseout='hideInfo(0)' onclick='movieInformation(0)'>
 		<p id='m0'></p>
 	</div>
 	<div id='movie1' class='movie'>
-		<img id = 'img1' class='img' src = './movie2.jpg' onmouseover='showInfo(1)' onmouseout='hideInfo(1)' onclick='movieInformation(1)'>
+		<img id = 'img1' class='img' src = './movie2s.jpg' onmouseover='showInfo(1)' onmouseout='hideInfo(1)' onclick='movieInformation(1)'>
 		<p id='m1'></p>
 	</div>
 	<div id='movie2' class='movie'>
-		<img id = 'img2' class='img' src = './movie3.jpg' onmouseover='showInfo(2)' onmouseout='hideInfo(2)' onclick='movieInformation(2)'>
+		<img id = 'img2' class='img' src = './movie3s.jpg' onmouseover='showInfo(2)' onmouseout='hideInfo(2)' onclick='movieInformation(2)'>
 		<p id='m2'></p>
 	</div>
 	<div id='movie3' class='movie'>
-		<img id = 'img3' class='img' src = './movie4.jpg' onmouseover='showInfo(3)' onmouseout='hideInfo(3)' onclick='movieInformation(3)'>
+		<img id = 'img3' class='img' src = './movie4s.jpg' onmouseover='showInfo(3)' onmouseout='hideInfo(3)' onclick='movieInformation(3)'>
 		<p id='m3'></p>
 	</div>
 	<div id='movie4' class='movie'>
-		<img id = 'img4' class='img' src = './movie5.jpg' onmouseover='showInfo(4)' onmouseout='hideInfo(4)' onclick='movieInformation(4)'>
+		<img id = 'img4' class='img' src = './movie5s.jpg' onmouseover='showInfo(4)' onmouseout='hideInfo(4)' onclick='movieInformation(4)'>
 		<p id='m4'></p>
 	</div>
   </div>
-  
-  <div id='movieinfo'>
+  <!--電影資訊 有大圖的-->
+  <div id='movieinfo' >
 	<img id='img' src='' style='width:100vw'>
 	<h3 id='name'></h3>
 	<div id='infos'></div>
-	
 	<div id='introd'></div>
-	<button onclick='nextBlock()'>訂票</button>
+	<button onclick='nextBlock()' style="width:100vw;height:10vh">我要訂票</button>
   </div>
-
-  <div id='moviebook' onclick='nextBlock()'>
+  <!--訂位畫面-->
+  <div id='moviebook' >
   booking
-  </div>
-  <button id="select" onclick="selectionPage()">Movie selection</button>
-<!--
-<div id="selection">
+	<div id="book">
 	<table class="book-table">
         <tbody>
           <tr>
-            <td rowspan="3" class="film-pic"><img id="photo_img" src="373.jpg" alt="電影劇照"></td>
+            <td rowspan="3" class="film-pic"><img id="photo_img" src="" alt="電影劇照" style="width:250px;height:180"></td>
             <td>
-              <div class="select-style">
-                <select name="movie_id" id="select_movie" required="required">
-                  <option value="">選擇電影</option>
-                <option value="411">謝謝你，在世界的角落找到我</option><option value="407">戀妻家宮本</option><option value="373">貓咪收集之家</option><option value="404">光</option><option value="405">接線員</option></select>
+              <div class="select-style" >
+                <select id="select_movie" required="required" onclick='selectMovie()'>
+                  <option value="411">謝謝你，在世界的角落找到我</option>
+				  <option value="407">戀妻家宮本</option>
+				  <option value="373">貓咪收集之家</option>
+				  <option value="404">光</option>
+				  <option value="405">接線員</option>
+				</select>
               </div>
             </td>
           </tr>
@@ -200,7 +217,12 @@
               <div class="select-style">
                 <select name="date" id="select_date" required="required">
                   <option value="">選擇時間</option>
-                <option value="2017-06-16">2017/06/16</option><option value="2017-06-17">2017/06/17</option><option value="2017-06-18">2017/06/18</option><option value="2017-06-19">2017/06/19</option><option value="2017-06-20">2017/06/20</option></select>
+                  <option value="2017-06-16">2017/06/16</option>
+				  <option value="2017-06-17">2017/06/17</option>
+				  <option value="2017-06-18">2017/06/18</option>
+				  <option value="2017-06-19">2017/06/19</option>
+				  <option value="2017-06-20">2017/06/20</option>
+				</select>
               </div>
             </td>
           </tr>
@@ -209,16 +231,26 @@
               <div class="select-style">
                 <select name="stage_id" id="select_stage" required="required">
                   <option value="">選擇場次</option>
-                <option value="24313">14:50</option><option value="24314">17:00</option><option value="24315">19:10</option><option value="24316">21:20</option><option value="24330">23:10</option></select>
+                <option value="24313">14:50</option>
+				<option value="24314">17:00</option>
+				<option value="24315">19:10</option>
+				<option value="24316">21:20</option>
+				<option value="24330">23:10</option>
+				</select>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
 	  <button id="next" onclick="bookingPage()">Next</button>
-</div>
--->
+  </div>
+  <div id='seat'>seat</div>
+  </div>
+  <!--button id="select" onclick="selectionPage()">Movie selection</button-->
 <!--
+
+-->
+
 <div id='movieBooking'>
   <div class="cockpit">
     <h1>Please select a seat</h1>
@@ -345,23 +377,8 @@
       </ol>
     </li>
 </div>
--->
-	<script>
-		var movieList = [
-			document.getElementById('movie0'),
-			document.getElementById('movie1'),
-			document.getElementById('movie2'),
-			document.getElementById('movie3'),
-			document.getElementById('movie4')
-		];
-		var InfoList = [
-			document.getElementById('m0'),
-			document.getElementById('m1'),
-			document.getElementById('m2'),
-			document.getElementById('m3'),
-			document.getElementById('m4')
-		];
-	</script>
+
+	
 </body>
 </html>
 
