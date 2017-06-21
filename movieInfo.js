@@ -16,7 +16,7 @@ var movieInfo='[{"imgsrc" : "./movie1.jpg",		\
 		"imgsrc" : "./movie2.jpg",\
 		"simgsrc":"./movie2s.jpg",	\
 		"name" : "戀妻家宮本",\
-		"data" : "2017-06-16",\
+		"data" : ["2017-06-07","2017-6-08","2017-6-09"],\
 		"time" : ["10:00","13:00","17:00","21:00"],\
 		"publisher" : "傳影互動股份有限公司",\
 		"lang" : "日語",\
@@ -30,7 +30,7 @@ var movieInfo='[{"imgsrc" : "./movie1.jpg",		\
 		"imgsrc" : "./movie3.jpg",\
 		"simgsrc":"./movie3s.jpg",	\
 		"name" : "貓咪收集之家",\
-		"data" : "2017-07-14",\
+		"data" : ["2017-07-14","2017-7-15","2017-07-16"],\
 		"time" : ["10:00","13:00","17:00","21:00"],\
 		"publisher" : "天馬行空數位有限公司",\
 		"lang" : "日語",\
@@ -50,7 +50,7 @@ var movieInfo='[{"imgsrc" : "./movie1.jpg",		\
 		"imgsrc" : "./movie4.jpg",\
 		"simgsrc":"./movie4s.jpg",	\
 		"name" : "光",\
-		"data" : "2017-07-14",\
+		"data" : ["2017-07-14","2017-7-15","2017-07-16"],\
 		"time" : ["10:00","13:00","17:00","21:00"],\
 		"publisher" : "傳影互動股份有限公司",\
 		"lang" : "日語",\
@@ -70,7 +70,7 @@ var movieInfo='[{"imgsrc" : "./movie1.jpg",		\
 		"imgsrc" : "./movie5.jpg",\
 		"simgsrc":"./movie5s.jpg",	\
 		"name" : "接線員",\
-		"data" : "2017-06-23",\
+		"data" : "["2017-06-23","2017-06-24","2017-06-25"],\
 		"time" : ["10:00","13:00","17:00","21:00"],\
 		"publisher" : "鏡象電影製作有限公司",\
 		"lang" : "國語",\
