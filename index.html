@@ -59,7 +59,7 @@
 			];
 			DivStatus = 'movieList';
 			listBlock();
-			console.log('init');
+			//console.log('init');
 		}
 		//var seatNum = 0;卡爾寫的
 		
@@ -73,7 +73,7 @@
 		}
 		//轉換區塊 list->info->book1->book2->list
 		function nextBlock(){
-			console.log(DivStatus);
+			//console.log(DivStatus);
 			switch(DivStatus){
 				case 'movieList':
 					movieListBlock.style.display = 'none';
@@ -96,7 +96,7 @@
 					DivStatus = 'movieList';
 				break;
 			}
-			console.log(DivStatus);
+			//console.log(DivStatus);
 		}
 		//返回列表
 		function listBlock(){
@@ -104,7 +104,7 @@
 			movieBookBlock.style.display = 'none';
 			movieListBlock.style.display = 'table';
 			DivStatus = 'movieList';
-			console.log('back list');
+			//console.log('back list');
 		}
 		function selectionPage(){
 			selection.style.display = 'none';
@@ -151,9 +151,31 @@
 		}
 		//選擇電影
 		function selectMovie(){
+			//預覽圖
 			var movieIndex = document.getElementById('select_movie').options.selectedIndex;
-			console.log(movieIndex);
+			//console.log(movieIndex);
 			document.getElementById('photo_img').src=Info[movieIndex].simgsrc;
+			//日期
+			for(var i=0;i<3;i++){
+				var sd = document.getElementById('select_date').childNodes[2*i+1];
+				var opt = document.createElement('OPTION');
+				opt.setAttribute("value", i);
+				var tmp = document.createTextNode(Info[movieIndex].data[i]);
+				//console.log(sd);
+				sd.replaceChild(tmp, sd.childNodes[0]);
+				//console.log(sd.childNodes[0]);
+			}
+			//場次
+			for(var i=0;i<4;i++){
+				var sd = document.getElementById('select_stage').childNodes[2*i+1];
+				var opt = document.createElement('OPTION');
+				opt.setAttribute("value", i);
+				var tmp = document.createTextNode(Info[movieIndex].time[i]);
+				console.log(sd);
+				sd.replaceChild(tmp, sd.childNodes[0]);
+				console.log(sd.childNodes[0]);
+			}
+			
 		}
 	</script>
 </head>
@@ -216,12 +238,9 @@
             <td>
               <div class="select-style">
                 <select name="date" id="select_date" required="required">
-                  <option value="">選擇時間</option>
-                  <option value="2017-06-16">2017/06/16</option>
-				  <option value="2017-06-17">2017/06/17</option>
-				  <option value="2017-06-18">2017/06/18</option>
-				  <option value="2017-06-19">2017/06/19</option>
-				  <option value="2017-06-20">2017/06/20</option>
+                  <option >2017/06/16</option>
+				  <option >2017/06/17</option>
+				  <option >2017/06/18</option>
 				</select>
               </div>
             </td>
@@ -230,12 +249,10 @@
             <td>
               <div class="select-style">
                 <select name="stage_id" id="select_stage" required="required">
-                  <option value="">選擇場次</option>
-                <option value="24313">14:50</option>
-				<option value="24314">17:00</option>
-				<option value="24315">19:10</option>
-				<option value="24316">21:20</option>
-				<option value="24330">23:10</option>
+                <option >14:50</option>
+				<option >17:00</option>
+				<option >19:10</option>
+				<option >21:20</option>
 				</select>
               </div>
             </td>
