@@ -134,7 +134,7 @@
 			document.getElementById('img').src=Info[i].imgsrc;
 			document.getElementById('name').innerHTML=Info[i].name;
 			infos.innerHTML="";
-			infos.innerHTML+='上映日期 : '+Info[i].data+'<br>';
+			infos.innerHTML+='上映日期 : '+Info[i].data[0]+'<br>';
 			infos.innerHTML+='發行商 : '+Info[i].publisher+'<br>';
 			infos.innerHTML+='語言 : '+Info[i].lang+'<br>';
 			infos.innerHTML+='片長 : '+Info[i].length+'<br>';
@@ -147,7 +147,8 @@
 			nextBlock();
 			//選擇電影
 			document.getElementById('select_movie').options.selectedIndex=i;
-			document.getElementById('photo_img').src=Info[i].simgsrc;
+			//document.getElementById('photo_img').src=Info[i].simgsrc;
+			selectMovie();
 		}
 		//選擇電影
 		function selectMovie(){
