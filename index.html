@@ -62,6 +62,7 @@
 			];
 			DivStatus = 'movieList';
 			listBlock();
+			bookInit();
 			//console.log('init');
 		}
 		//var seatNum = 0;卡爾寫的
@@ -110,22 +111,7 @@
 			DivStatus = 'movieList';
 			//console.log('back list');
 		}
-		/*function selectionPage(){
-			selection.style.display = 'none';
-			movieBooking.style.display = 'none';
-			if(isMovieSelection)
-			{
-				movielist.style.display='none';
-				movieinfo.style.display='none';
-				selection.style.display = 'table';
-			}
-			else{
-				movielist.style.display='table';
-				movieinfo.style.display='none';
-				selection.style.display = 'none';
-			}
-			isMovieSelection = !isMovieSelection;
-		}*/
+		
 		
 		//進入到選位子的畫面
 		function checkInfo(){
@@ -188,10 +174,46 @@
 			
 		}
 	</script>
+	
+	<script>
+		var bookInfo;
+		var book;
+		book = JSON.parse(localStorage.movieBookList);
+		
+		function bookInit(){
+			if(typeof(book) === 'undefined'){
+			alert('undefined');
+			bookInfo = [];
+			localStorage["movieBookList"]=JSON.stringify(bookInfo);
+			book = JSON.parse(localStorage.movieBookList);
+			}
+			else{
+				alert('is defined');
+			}
+		}
+		function addNewData(){
+			let name=document.getElementById('bookingName').value;
+			let phone=document.getElementById('bookingPhone').value;
+			let movie=document.getElementById('select_movie').options.selectedIndex;
+			let date=document.getElementById('select_date').options.selectedIndex;
+			let time=document.getElementById('select_stage').options.selectedIndex;
+			
+			console.log(book.length);
+			book[book.length]={"name":name,"phoneNumber":phone,"movie":movie,"date":date,"time":time};
+			console.log(book.length);
+			console.log(book[book.length-1]);
+			localStorage["movieBookList"]=JSON.stringify(book);
+		}
+		function dataClear() {
+			localStorage.clear();
+			console.log(localStorage.movieBookList.length);
+		}
+	</script>
 </head>
 <body onload='init()'>
   <div id='menu' style="background-color:gray">
     <button onclick='listBlock()'>返回列表</button>
+	<button onclick='dataClear()'>清空資料庫</button>
   </div>
   <!--電影列表-->
   <div id='movielist' >
@@ -271,13 +293,15 @@
       </table>
 	  <!--確認 到下一個畫面-->
 	  <button id="next" onclick="nextBlock();checkInfo()">確認</button>
-  </div>
+    </div>
   </div>
 
 <!--選擇座位 不完整:最多四個位置(沒做),要可以查詢(沒做)-->
 <div id='movieseat'>
+  <!--選擇的資訊 電影日期場次-->
   <div id="checkInfo">
   </div>
+  <!--選座位-->
   <ol class="cabin fuselage">
     <li class="row row--1">
       <ol class="seats" type="A">
@@ -399,9 +423,15 @@
         </li>
       </ol>
     </li>
+  </ol>
 	
 	<!--未完成-->
-	<button id='sure' onclick=''>確認</button>
+	<div id='bookingInfo'>
+		你的名字:<input id='bookingName' type='text' value=''>
+		<br>
+		你的電話:<input id='bookingPhone' type='text' value=''>
+	</div>
+	<button id='sure' onclick='addNewData()'>確認</button>
 </div>
 
 	
