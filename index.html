@@ -31,6 +31,7 @@
 	//movieInfoBlock 點預覽圖進去的畫面 有大圖+完整資訊的
 	//movieBookBlock 訂位畫面 選電影日期場次
 	//movieSeatBlock 劃位畫面 選座位
+	//movieSearchBlock 查詢頁面
 	//movieList movieListBlock裡的每個電影
 	//movieInfo movieListBlock裡每個電影的資訊(電影名稱)
 		var DivStatus;
@@ -38,6 +39,7 @@
 		var movieInfoBlock;
 		var movieBookBlock;
 		var movieSeatBlock;
+		var movieSearchBlock;
 		var movieList;
 		var InfoList;
 		//初始化
@@ -46,6 +48,7 @@
 			movieInfoBlock = document.getElementById('movieinfo');
 			movieBookBlock = document.getElementById('moviebook');
 			movieSeatBlock = document.getElementById('movieseat');
+			movieSearchBlock = document.getElementById('booksearch');
 			movieList = [
 				document.getElementById('movie0'),
 				document.getElementById('movie1'),
@@ -107,6 +110,7 @@
 			movieInfoBlock.style.display = 'none';
 			movieBookBlock.style.display = 'none';
 			movieSeatBlock.style.display = 'none';
+			movieSearchBlock.style.display = 'none';
 			movieListBlock.style.display = 'table';
 			DivStatus = 'movieList';
 			//console.log('back list');
@@ -171,7 +175,17 @@
 				sd.replaceChild(tmp, sd.childNodes[0]);
 				console.log(sd.childNodes[0]);
 			}
+		}
+		
+		//進入查詢頁面
+		function bookSearch(){
+			movieInfoBlock.style.display = 'none';
+			movieBookBlock.style.display = 'none';
+			movieSeatBlock.style.display = 'none';
+			movieListBlock.style.display = 'none';
+			movieSearchBlock.style.display = 'table';
 			
+			//console.log('back list');
 		}
 	</script>
 	
@@ -203,6 +217,24 @@
 			console.log(book.length);
 			console.log(book[book.length-1]);
 			localStorage["movieBookList"]=JSON.stringify(book);
+			alert('已儲存');
+		}
+		function searchData(){
+			var sname = document.getElementById('searchName').value;
+			var sphone = document.getElementById('searchPhone').value;
+			var result = document.getElementById('result');
+			result.innerHTML="";
+			console.log(sname);
+			console.log(sphone);
+			for(let i=0;i<book.length;i++){
+			console.log(book[i].name);
+			console.log(book[i].phoneNumber);
+				if(sname == book[i].name && sphone == book[i].phoneNumber){
+					result.innerHTML += "電影:"+Info[book[i].movie].name+'<br>';
+					result.innerHTML += "日期:"+Info[book[i].movie].data[book[i].date]+"<br>";
+					result.innerHTML += "場次:"+Info[book[i].movie].time[book[i].time]+"<br>";
+				}
+			}
 		}
 		function dataClear() {
 			localStorage.clear();
@@ -213,6 +245,7 @@
 <body onload='init()'>
   <div id='menu' style="background-color:gray">
     <button onclick='listBlock()'>返回列表</button>
+	<button onclick='bookSearch()'>查詢定位</button>
 	<button onclick='dataClear()'>清空資料庫</button>
   </div>
   <!--電影列表-->
@@ -425,7 +458,7 @@
     </li>
   </ol>
 	
-	<!--未完成-->
+	<!--填寫個人資料-->
 	<div id='bookingInfo'>
 		你的名字:<input id='bookingName' type='text' value=''>
 		<br>
@@ -434,6 +467,16 @@
 	<button id='sure' onclick='addNewData()'>確認</button>
 </div>
 
-	
+<div id='booksearch'>
+	searching
+	<!--依個人資料查詢-->
+	<div id='bookingsearch'>
+		你的名字:<input id='searchName' type='text' value=''>
+		<br>
+		你的電話:<input id='searchPhone' type='text' value=''>
+	</div>
+	<button id='sure' onclick='searchData()'>查詢</button>
+	<p id='result'></p>
+</div>	
 </body>
 </html>
