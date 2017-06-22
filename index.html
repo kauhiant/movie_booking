@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>電影定位</title>
+	<title>電影訂位</title>
 	<meta charset="UTF-8">
 	<style>
 	/*顯示在初始頁面的圖片大小*/
@@ -66,9 +66,7 @@
 			DivStatus = 'movieList';
 			listBlock();
 			bookInit();
-			//console.log('init');
 		}
-		//var seatNum = 0;卡爾寫的
 		
 		//在初始畫面中 滑鼠移到預覽圖上就顯示電影名稱
 		function showInfo(i){
@@ -80,7 +78,6 @@
 		}
 		//轉換區塊 list->info->book->seat->list
 		function nextBlock(){
-			//console.log(DivStatus);
 			switch(DivStatus){
 				case 'movieList':
 					movieListBlock.style.display = 'none';
@@ -103,7 +100,6 @@
 					DivStatus = 'movieList';
 				break;
 			}
-			//console.log(DivStatus);
 		}
 		//返回列表
 		function listBlock(){
@@ -113,7 +109,6 @@
 			movieSearchBlock.style.display = 'none';
 			movieListBlock.style.display = 'table';
 			DivStatus = 'movieList';
-			//console.log('back list');
 		}
 		
 		
@@ -184,27 +179,22 @@
 			movieSeatBlock.style.display = 'none';
 			movieListBlock.style.display = 'none';
 			movieSearchBlock.style.display = 'table';
-			
-			//console.log('back list');
 		}
 	</script>
 	
 	<script>
-		var bookInfo;
-		var book;
-		book = JSON.parse(localStorage.movieBookList);
+		var book;//訂位資料表
+		book = JSON.parse(localStorage.movieBookList);//把資料庫的資料讀進來
 		
 		function bookInit(){
+			//資料庫初始化
 			if(typeof(book) === 'undefined'){
-			alert('undefined');
-			bookInfo = [];
-			localStorage["movieBookList"]=JSON.stringify(bookInfo);
-			book = JSON.parse(localStorage.movieBookList);
-			}
-			else{
-				alert('is defined');
+				book = [];
+				localStorage["movieBookList"]=JSON.stringify(book);
+				book = JSON.parse(localStorage.movieBookList);
 			}
 		}
+		//加入一筆訂單
 		function addNewData(){
 			let name=document.getElementById('bookingName').value;
 			let phone=document.getElementById('bookingPhone').value;
@@ -212,30 +202,49 @@
 			let date=document.getElementById('select_date').options.selectedIndex;
 			let time=document.getElementById('select_stage').options.selectedIndex;
 			
-			console.log(book.length);
-			book[book.length]={"name":name,"phoneNumber":phone,"movie":movie,"date":date,"time":time};
-			console.log(book.length);
-			console.log(book[book.length-1]);
+			let count=0;
+			let cr=[];
+			for(let i=0;i<5;i++){
+				for(let j=0;j<5;j++){
+					if(seatTable[i][j].checked){
+						cr[count] = {colon:j, row:i};
+						count++;
+						if(count>4){
+							alert('最多只能訂四個位置');
+							return;
+						}
+					}
+				}
+			}
+			
+			//新增到變數中
+			book[book.length]={"name":name,"phoneNumber":phone,"movie":movie,"date":date,"time":time,"cr":cr};
+			//與資料庫同步
 			localStorage["movieBookList"]=JSON.stringify(book);
 			alert('已儲存');
 		}
+		//依姓名電話找出訂位資訊
 		function searchData(){
 			var sname = document.getElementById('searchName').value;
 			var sphone = document.getElementById('searchPhone').value;
 			var result = document.getElementById('result');
+			
 			result.innerHTML="";
-			console.log(sname);
-			console.log(sphone);
-			for(let i=0;i<book.length;i++){
-			console.log(book[i].name);
-			console.log(book[i].phoneNumber);
+			for(let i=0; i<book.length; i++){
+				//有符合就印出來
 				if(sname == book[i].name && sphone == book[i].phoneNumber){
 					result.innerHTML += "電影:"+Info[book[i].movie].name+'<br>';
 					result.innerHTML += "日期:"+Info[book[i].movie].data[book[i].date]+"<br>";
 					result.innerHTML += "場次:"+Info[book[i].movie].time[book[i].time]+"<br>";
+					result.innerHTML += "座位:";
+					for(x in book[i].cr){
+						result.innerHTML += seatTable[book[i].cr[x].row][book[i].cr[x].colon].id+' ';
+					}
+					result.innerHTML += '<br><br>';
 				}
 			}
 		}
+		//把資料庫清空(避免佔用電腦的儲存空間)
 		function dataClear() {
 			localStorage.clear();
 			console.log(localStorage.movieBookList.length);
@@ -243,10 +252,12 @@
 	</script>
 </head>
 <body onload='init()'>
+<!--功能表-->
   <div id='menu' style="background-color:gray">
     <button onclick='listBlock()'>返回列表</button>
 	<button onclick='bookSearch()'>查詢定位</button>
 	<button onclick='dataClear()'>清空資料庫</button>
+	<p><strong>因為資料是存在你的電腦裡，所以為了不浪費空間，請在測試完後清空資料庫</strong></p>
   </div>
   <!--電影列表-->
   <div id='movielist' >
@@ -281,7 +292,6 @@
   </div>
   <!--訂位畫面-->
   <div id='moviebook' >
-  booking
 	<div id="book">
 	<table class="book-table">
         <tbody>
@@ -325,7 +335,7 @@
         </tbody>
       </table>
 	  <!--確認 到下一個畫面-->
-	  <button id="next" onclick="nextBlock();checkInfo()">確認</button>
+	  <button id="next" onclick="nextBlock();checkInfo();seatTableClear()">確認</button>
     </div>
   </div>
 
@@ -466,9 +476,8 @@
 	</div>
 	<button id='sure' onclick='addNewData()'>確認</button>
 </div>
-
+<!--查詢頁面-->
 <div id='booksearch'>
-	searching
 	<!--依個人資料查詢-->
 	<div id='bookingsearch'>
 		你的名字:<input id='searchName' type='text' value=''>
@@ -480,3 +489,49 @@
 </div>	
 </body>
 </html>
+<script>
+	var seatTable=[
+		[
+			document.getElementById('1A'),
+			document.getElementById('1B'),
+			document.getElementById('1C'),
+			document.getElementById('1D'),
+			document.getElementById('1E')
+		],
+		[
+			document.getElementById('2A'),
+			document.getElementById('2B'),
+			document.getElementById('2C'),
+			document.getElementById('2D'),
+			document.getElementById('2E')
+		],
+		[
+			document.getElementById('3A'),
+			document.getElementById('3B'),
+			document.getElementById('3C'),
+			document.getElementById('3D'),
+			document.getElementById('3E')
+		],
+		[
+			document.getElementById('4A'),
+			document.getElementById('4B'),
+			document.getElementById('4C'),
+			document.getElementById('4D'),
+			document.getElementById('4E')
+		],
+		[
+			document.getElementById('5A'),
+			document.getElementById('5B'),
+			document.getElementById('5C'),
+			document.getElementById('5D'),
+			document.getElementById('5E')
+		]
+	];
+	function seatTableClear(){
+		for(let i=0;i<5;i++){
+			for(let j=0;j<5;j++){
+				seatTable[i][j].checked=false;
+			}
+		}
+	}
+</script>
